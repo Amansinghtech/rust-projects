@@ -47,6 +47,10 @@ pub fn encrypt(mut data: Vec<u8>) -> Vec<u8> {
     println!("Key written to file secret.key");
     let cipher = Aes256Gcm::new(&key);
     let nonce = Aes256Gcm::generate_nonce(&mut OsRng);
+
+    // write nonce to file
+    write_to_file(&String::from("nonce"), &nonce.to_vec());
+
     cipher.encrypt_in_place(&nonce, b"", &mut data).expect("failed encrypting data"); // 96-bits; unique per message
     return data;
 }
